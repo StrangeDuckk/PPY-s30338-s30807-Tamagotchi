@@ -1,3 +1,12 @@
+#todo -rozdzielic na klasy
+#todo -zabawa
+#todo - modyfikatyory do jedzenia i nudy
+#todo - przegrana
+#todo - random eventy
+#todo - mystery treat
+
+
+
 import tkinter as tk
 import tkinter.ttk as ttk
 from Tamagotchi import Tamagotchi
@@ -51,7 +60,7 @@ def main():
         najedzenie_label = ttk.Label(root, text="Najedzenie:")
         najedzenie_label.grid(column=0, row=1)
 
-        najedzenie_progress = ttk.Progressbar(root, length=100, mode="determinate")
+        najedzenie_progress = ttk.Progressbar(root, length=200, mode="determinate")
         najedzenie_progress.grid(column=1, row=1,columnspan=2)
         najedzenie_progress['value'] = 0
 
@@ -59,7 +68,7 @@ def main():
         nuda_label = ttk.Label(root, text="Nuda:")
         nuda_label.grid(column=0, row=2)
 
-        nuda_progress = ttk.Progressbar(root, length=100, mode="determinate")
+        nuda_progress = ttk.Progressbar(root, length=200, mode="determinate")
         nuda_progress.grid(column=1, row=2, columnspan=2)
         nuda_progress['value'] = 30
 
@@ -83,6 +92,48 @@ def main():
             root.after(6000, updateMonety)
 
         updateMonety()
+
+        #Sklep z zywnoscia
+        tk.Label(root, text="Sklep:", font=("Arial", 26)).grid(row=4, column=0, columnspan=4)
+        #Woda
+        woda = tk.Button(root, text="Woda", command=lambda:nakarm("woda")).grid(row=5, column=0)
+
+        #Chlep
+        chlep = tk.Button(root, text="Chlep", command=lambda:nakarm("chlep")).grid(row=5, column=1)
+
+        #Ryba
+        ryba = tk.Button(root, text="Ryba", command=lambda:nakarm("ryba")).grid(row=5, column=2)
+
+        #Mystery treat
+        mysteryTreat = tk.Button(root, text="Mystery treat", command=lambda:nakarm("mystery treat")).grid(row=5, column=3)
+
+        #Nakarmienie zwierzaka
+        def nakarm(jedzenie):
+            if jedzenie == "woda":
+                postac.najedzenie = postac.najedzenie + 20
+                najedzenie_progress['value'] = postac.najedzenie
+            if jedzenie == "chlep":
+                if postac.monety >= 10:
+                    postac.monety = postac.monety - 10
+                    tk.Label(root, text="Monety:" + str(postac.monety)).grid(row=3, column=0, columnspan=2)
+
+                    postac.najedzenie = postac.najedzenie + 40
+                    najedzenie_progress['value'] = postac.najedzenie
+            if jedzenie == "ryba":
+                if postac.monety >= 20:
+                    postac.monety = postac.monety - 20
+                    tk.Label(root, text="Monety:" + str(postac.monety)).grid(row=3, column=0, columnspan=2)
+
+                    postac.najedzenie = postac.najedzenie + 60
+                    najedzenie_progress['value'] = postac.najedzenie
+            if jedzenie == "mystery treat": #todo
+                if postac.monety >= 50:
+                    postac.monety = postac.monety - 50
+                    tk.Label(root, text="Monety:" + str(postac.monety)).grid(row=3, column=0, columnspan=2)
+
+                    pass
+
+
 
     wyborPostaci()
     root.mainloop()
