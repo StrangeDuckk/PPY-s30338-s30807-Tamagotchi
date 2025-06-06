@@ -7,3 +7,5 @@ class Tamagotchi:
         self.maxNuda = maxPoziomNudy
         self.rodzajPostaci = rodzaj
         self.monety = 20
+        self.punkty = 0
+        self.zdjedzonePokarmy = []
