@@ -13,7 +13,7 @@ def start():
 
     # Stworzenie okna
     root = tk.Tk()
-    root.geometry("400x400")
+    root.geometry("500x400")
     root.title("PJATK Tamagotchi")
 
     def wyborPostaci():
@@ -52,20 +52,26 @@ def start():
         tk.Label(root, text="PJATK Tamagotchi").grid(row=0, column=0, columnspan=4)
 
         # Pasek najedzenia
-        najedzenie_label = ttk.Label(root, text="Najedzenie:")
+        najedzenie_label = ttk.Label(root, text="Najedzenie:")  #napis
         najedzenie_label.grid(column=0, row=1)
 
-        najedzenie_progress = ttk.Progressbar(root, length=200, mode="determinate")
+        najedzenie_progress = ttk.Progressbar(root, length=200, mode="determinate") #pasek
         najedzenie_progress.grid(column=1, row=1, columnspan=2)
         najedzenie_progress['value'] = postac.najedzenie
 
+        najedzenie_numer = tk.Label(root, text=f"{postac.najedzenie} / {postac.maxNajedzenie}")   #numerycznie
+        najedzenie_numer.grid(column=3, row=1)
+
         # Pasek nudy
-        nuda_label = ttk.Label(root, text="Nuda:")
+        nuda_label = ttk.Label(root, text="Nuda:") #napis
         nuda_label.grid(column=0, row=2)
 
-        nuda_progress = ttk.Progressbar(root, length=200, mode="determinate")
+        nuda_progress = ttk.Progressbar(root, length=200, mode="determinate") #pasek
         nuda_progress.grid(column=1, row=2, columnspan=2)
         nuda_progress['value'] = postac.nuda
+
+        nuda_numer = tk.Label(root, text=f"{postac.nuda} / {postac.maxNuda}")   #numerycznie
+        nuda_numer.grid(column=3, row=2)
 
         # Monety
         label_monety = tk.Label(root, text="Monety:" + str(postac.monety))
@@ -75,8 +81,10 @@ def start():
         def updateNajedzenieNuda():
             postac.najedzenie = postac.najedzenie - 1
             najedzenie_progress['value'] = postac.najedzenie
+            najedzenie_numer.configure(text=f"{postac.najedzenie} / {postac.maxNajedzenie}")
             postac.nuda = postac.nuda + 1
             nuda_progress['value'] = postac.nuda
+            nuda_numer.configure(text=f"{postac.nuda} / {postac.maxNuda}")
             root.after(3000, updateNajedzenieNuda)
 
         updateNajedzenieNuda()
@@ -94,21 +102,38 @@ def start():
         # Sklep z zywnoscia
         tk.Label(root, text="Sklep:", font=("Arial", 26)).grid(row=4, column=0, columnspan=4)
         # Woda
-        woda = tk.Button(root, text="Woda", command=lambda: petMechanics.nakarm("woda",postac,najedzenie_progress,label_monety))
+        woda = tk.Button(root, text="Woda +20 -0g", command=lambda: petMechanics.nakarm("woda",postac,najedzenie_progress,label_monety))
         woda.grid(row=5, column=0)
 
         # Chlep
-        chlep = tk.Button(root, text="Chlep", command=lambda: petMechanics.nakarm("chlep",postac,najedzenie_progress,label_monety))
+        chlep = tk.Button(root, text="Chlep +40 -10g", command=lambda: petMechanics.nakarm("chlep",postac,najedzenie_progress,label_monety))
         chlep.grid(row=5, column=1)
 
         # Ryba
-        ryba = tk.Button(root, text="Ryba", command=lambda: petMechanics.nakarm("ryba",postac,najedzenie_progress,label_monety))
+        ryba = tk.Button(root, text="Ryba +60 -20g +5pkt", command=lambda: petMechanics.nakarm("ryba",postac,najedzenie_progress,label_monety))
         ryba.grid(row=5, column=2)
 
         # Mystery treat
-        mysteryTreat = tk.Button(root, text="Mystery treat", command=lambda: petMechanics.nakarm("mystery treat",postac,najedzenie_progress,label_monety))
+        mysteryTreat = tk.Button(root, text="Mystery treat -50g", command=lambda: petMechanics.nakarm("mystery treat",postac,najedzenie_progress,label_monety))
         mysteryTreat.grid(row=5,column=3)
 
+
+        #Zabawa
+        tk.Label(root, text="Zabawa:", font=("Arial", 26)).grid(row=6, column=0, columnspan=4)
+        # Woda
+        woda = tk.Button(root, text="Spacer -10nudy",
+                         command=lambda: petMechanics.nakarm("woda", postac, najedzenie_progress, label_monety))
+        woda.grid(row=7, column=0)
+
+        # Chlep
+        chlep = tk.Button(root, text="Zbieranie kasztanów -20nudy",
+                          command=lambda: petMechanics.nakarm("chlep", postac, najedzenie_progress, label_monety))
+        chlep.grid(row=7, column=1)
+
+        # Ryba
+        ryba = tk.Button(root, text="Jazda konno -40nudy",
+                         command=lambda: petMechanics.nakarm("ryba", postac, najedzenie_progress, label_monety))
+        ryba.grid(row=7, column=2)
 
 
     wyborPostaci()
