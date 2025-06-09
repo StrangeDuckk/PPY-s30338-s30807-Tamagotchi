@@ -8,4 +8,5 @@ class Tamagotchi:
         self.rodzajPostaci = rodzaj
         self.monety = 20
         self.punkty = 0
-        self.zdjedzonePokarmy = []
+        self.zjedzonePokarmy = []
+        self.CzyZginalOdEventu = False

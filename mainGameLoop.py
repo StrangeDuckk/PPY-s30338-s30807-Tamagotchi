@@ -67,7 +67,7 @@ def startMainGameLoop(root,characterType):
             if seconds == 20 or seconds == 40 or seconds == 60:
                 if random.random() < 0.7:
                     frozen = True
-                    events.random_event(root)
+                    events.random_event(root, postac)
 
 
         root.after(1000, updateTimeAndPointsAndInvokeRandomEvents, seconds, minutes)
@@ -119,7 +119,6 @@ def startMainGameLoop(root,characterType):
         root.after(6000, updateMonety)
 
 
-
     updateMonety()
 
     #-----------------------------------------------------------------------
@@ -140,10 +139,15 @@ def startMainGameLoop(root,characterType):
     def lose_conditions():
         global frozen
         global points
-        if postac.najedzenie < 0 or postac.najedzenie > postac.maxNajedzenie:
-            frozen = True
-            messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
-            startMainGameLoop(root,postac.rodzajPostaci)
+        if not frozen:
+            if postac.najedzenie < 0 or postac.najedzenie > postac.maxNajedzenie:
+                frozen = True
+                messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
+                startMainGameLoop(root,postac.rodzajPostaci)
+            elif postac.CzyZginalOdEventu:
+                frozen = True
+                messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
+                startMainGameLoop(root, postac.rodzajPostaci)
 
         root.after(1000, lose_conditions)
 
