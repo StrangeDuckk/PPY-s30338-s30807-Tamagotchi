@@ -1,10 +1,10 @@
-#todo -rozdzielic na klasy
-#todo -zabawa
 #todo - modyfikatyory do jedzenia i nudy
 #todo - przegrana
 #todo - random eventy
 #todo - mystery treat
-from GUI import screen as sc
+from characterSelection import characterSelectionWindow
 
 if __name__ == '__main__':
-    sc.start()
+    characterSelectionWindow()
+
+#HOW IT WORKS: characterSelectionWindow tworzy okno, wybiera sie postac, uruchamia sie mainGameLoop z wybrana postacia i otrzymanym root.
