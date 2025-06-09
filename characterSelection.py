@@ -8,7 +8,7 @@ from characterType import characterType
 def characterSelectionWindow():
     # Window creation
     root = tk.Tk()
-    root.geometry("500x400")
+    root.geometry("700x400")
     root.title("PJATK Tamagotchi")
 
     global postac

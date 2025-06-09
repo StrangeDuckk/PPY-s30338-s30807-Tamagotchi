@@ -1,7 +1,9 @@
+import mainGameLoop
 def updateFood(root,postac,food_progress_bar,food_numeric):
-    postac.najedzenie = postac.najedzenie - 1
-    food_progress_bar['value'] = postac.najedzenie
-    food_numeric.configure(text=f"{postac.najedzenie} / {postac.maxNajedzenie}")
+    if not mainGameLoop.frozen:
+        postac.najedzenie = postac.najedzenie - 1
+        food_progress_bar['value'] = postac.najedzenie
+        food_numeric.configure(text=f"{postac.najedzenie} / {postac.maxNajedzenie}")
     root.after(3000, lambda: updateFood(root,postac,food_progress_bar,food_numeric))    #lambda bo updateFood potrzebuje root a nie jest w mainGameLoop
 
 def refreshFood(postac,food_progress_bar,food_numeric):

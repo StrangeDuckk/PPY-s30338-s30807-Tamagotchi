@@ -1,11 +1,13 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import messagebox
+import random
 
+import events
 from activities import activities
 from boredom import updateBoredom
 from food import updateFood
 from models import Tamagotchi as t
-from logic import petMechanics
 from shop import shop
 
 
@@ -33,6 +35,44 @@ def startMainGameLoop(root,characterType):
     #Display
     #Title
     tk.Label(root, text="PJATK Tamagotchi").grid(row=0, column=0, columnspan=4) #Width = 4 columns
+
+    #Time & Points
+    global seconds
+    global minutes
+    global points
+    global frozen
+    frozen = False
+    global activity_happening
+    activity_happening = False
+
+    seconds, minutes, points, prev_second, prev_minute = 0, 0, 0, 0, 0
+
+    time_label = (tk.Label(root, text=f"Time: {minutes} min : {seconds%60} s"))
+    time_label.grid(row=0, column=5 )
+
+    def updateTimeAndPointsAndInvokeRandomEvents(seconds, minutes):
+
+        global frozen
+        global points
+        if not frozen:
+            seconds = seconds + 1
+            points = points + 1
+            if seconds % 60 == 0:
+                minutes = minutes + 1
+                seconds = 0
+
+            time_label.configure(text=f"Time: {minutes} min : {seconds%60} s")
+
+            # Random events
+            if seconds == 20 or seconds == 40 or seconds == 60:
+                if random.random() < 0.7:
+                    frozen = True
+                    events.random_event(root)
+
+
+        root.after(1000, updateTimeAndPointsAndInvokeRandomEvents, seconds, minutes)
+
+    updateTimeAndPointsAndInvokeRandomEvents(seconds, minutes)
 
     #Food Display
     #Text
@@ -72,10 +112,13 @@ def startMainGameLoop(root,characterType):
 
     # Update money
     def updateMonety():
-        postac.monety = postac.monety + 1
-        label_monety.configure(text="Monety:" + str(postac.monety))
-        label_monety.grid(row=3, column=0, columnspan=2)
+        if not frozen:
+            postac.monety = postac.monety + 1
+            label_monety.configure(text="Monety:" + str(postac.monety))
+            label_monety.grid(row=3, column=0, columnspan=2)
         root.after(6000, updateMonety)
+
+
 
     updateMonety()
 
@@ -87,9 +130,21 @@ def startMainGameLoop(root,characterType):
     #Update Boredom
     updateBoredom(root,postac,boredom_progress_bar,boredom_numeric)
 
-
     #Shop
     shop(root,postac,food_progress_bar,food_numeric,label_monety)
 
     #Activities
     activities(root,postac,boredom_progress_bar,boredom_numeric)
+
+    #Check for Lose
+    def lose_conditions():
+        global frozen
+        global points
+        if postac.najedzenie < 0 or postac.najedzenie > postac.maxNajedzenie:
+            frozen = True
+            messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
+            startMainGameLoop(root,postac.rodzajPostaci)
+
+        root.after(1000, lose_conditions)
+
+    lose_conditions()
