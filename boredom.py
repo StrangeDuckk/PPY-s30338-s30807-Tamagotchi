@@ -2,13 +2,15 @@ import mainGameLoop
 import tkinter as tk
 def updateBoredom(root,postac,boredom_progress_bar,boredom_numeric):
     if not mainGameLoop.frozen:
-        postac.nuda = postac.nuda + 1
+        postac.nuda = postac.nuda + 1*postac.mnoznikNudy
         boredom_progress_bar['value'] = postac.nuda
         boredom_numeric.configure(text=f"{postac.nuda} / {postac.maxNuda}")
+        if postac.nuda <0 or postac.nuda>postac.maxNuda:
+            postac.CzyZginalZNudy = True
     root.after(3000, lambda: updateBoredom(root,postac,boredom_progress_bar,boredom_numeric))
 
 def refreshBoredom(postac,boredom_progress_bar,boredom_numeric):
-    boredom_progress_bar['value'] = postac.nuda
+    boredom_progress_bar['value'] = postac.nuda*postac.mnoznikNudy
     boredom_numeric.configure(text=f"{postac.nuda} / {postac.maxNuda}")
 
 def play(activityType,postac,boredom_progress_bar,boredom_numeric,buttons,root):

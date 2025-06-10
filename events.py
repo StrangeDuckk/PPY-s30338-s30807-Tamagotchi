@@ -21,7 +21,7 @@ def random_event(root, postac):
             ran2 = random()
             if ran2 <=0.5:
                 message = messagebox.showinfo('Random Event Pozytywny', 'Znalezienie Grzybkow Halucynkow, \nokazalo sie ze zwierzak jest na nie uczulony, \ninstant smierc :|')
-            if ran2 < 0.5:
+            else:
                 message = messagebox.showinfo('Random Event Pozytywny', 'Znalezienie Grzybkow Halucynkow, zwierzak swietnie sie bawil z grzybkami, \nchce wiecej i staje sie uzalezniony, \njednak nie ma swojego dilera wiec szybko wraca do normy, \nnuda - 75% obecnego poziomu zabawy')
                 postac.nuda -= postac.nuda*0.75
         else:

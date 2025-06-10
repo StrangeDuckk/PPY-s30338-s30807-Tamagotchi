@@ -24,11 +24,11 @@ def startMainGameLoop(root,characterType):
     if characterType == characterType.ZWYCZAJNIAK:
         postac = t.Tamagotchi(100, 100, characterType.ZWYCZAJNIAK)
     elif characterType == characterType.GRUBAS:
-        postac = t.Tamagotchi(150, 100, characterType.GRUBAS)
+        postac = t.Tamagotchi(150, 100, characterType.GRUBAS, mnoznikGlodu=3)#3 razy szybciej glodnieje
     elif characterType == characterType.DZIECIAK:
-        postac = t.Tamagotchi(100, 100, characterType.DZIECIAK)
+        postac = t.Tamagotchi(100, 100, characterType.DZIECIAK, mnoznikNudy = 5) #5 razy szybciej sie nudzi
     elif characterType == characterType.BIZNESMEN:
-        postac = t.Tamagotchi(100, 100, characterType.BIZNESMEN)
+        postac = t.Tamagotchi(100, 100, characterType.BIZNESMEN, mnoznikMonet = 3) #3 razy szybciej zarabia z czasu
 
     #-----------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ def startMainGameLoop(root,characterType):
             seconds = seconds + 1
             points = points + 1
             if seconds % 60 == 0:
-                minutes = minutes + 1
+                minutes = minutes + 1*postac.mnoznikMonet
                 seconds = 0
 
             time_label.configure(text=f"Time: {minutes} min : {seconds%60} s")
@@ -113,9 +113,11 @@ def startMainGameLoop(root,characterType):
     # Update money
     def updateMonety():
         if not frozen:
-            postac.monety = postac.monety + 1
+            postac.monety = postac.monety + 1*postac.mnoznikMonet
             label_monety.configure(text="Monety:" + str(postac.monety))
             label_monety.grid(row=3, column=0, columnspan=2)
+            if postac.monety <0:
+                postac.czyZginalOdBankructwa = True
         root.after(6000, updateMonety)
 
 
@@ -142,12 +144,19 @@ def startMainGameLoop(root,characterType):
         if not frozen:
             if postac.najedzenie < 0 or postac.najedzenie > postac.maxNajedzenie:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (fullness or emptiness)\nYour score is: {points}')
                 startMainGameLoop(root,postac.rodzajPostaci)
             elif postac.CzyZginalOdEventu:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitly dead :[\nYour score is: {points}')
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (event)\nYour score is: {points}')
                 startMainGameLoop(root, postac.rodzajPostaci)
+            elif postac.CzyZginalOdBankructwa:
+                frozen = True
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (bankruptcy)\nYour score is: {points}')
+            elif postac.CzyZginalZNudy:
+                frozen = True
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (boredom or heart attack)\nYour score is: {points}')
+
 
         root.after(1000, lose_conditions)
 
