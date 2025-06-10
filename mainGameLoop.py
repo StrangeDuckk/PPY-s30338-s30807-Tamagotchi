@@ -4,7 +4,6 @@ from tkinter import messagebox
 import random
 
 import events
-from activities import activities
 from boredom import updateBoredom
 from food import updateFood
 from models import Tamagotchi as t
@@ -138,7 +137,6 @@ def startMainGameLoop(root,characterType):
     shop(root,postac,food_progress_bar,food_numeric,label_monety)
 
     #Activities
-    activities(root,postac,boredom_progress_bar,boredom_numeric)
 
     #Check for Lose
     def lose_conditions():
