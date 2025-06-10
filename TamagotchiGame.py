@@ -250,6 +250,10 @@ class TamagotchiGame:
         self.game_loop()
 
     def game_loop(self):
+        """
+        Uruchamia wszystie funkcje odpowiedziane za aktualizowanie jedzenia, poziomu nudy, czasu, sprawdzania przegranej, monet.
+        :return:
+        """
         self.updateFood()
         self.updateBoredom()
         self.updateMonety()
@@ -257,6 +261,10 @@ class TamagotchiGame:
         self.updateTimeAndPoints()
 
     def updateTimeAndPoints(self):
+        """
+        Aktualizuje czas i punkty co 1 sekundę.
+        :return:
+        """
         if not self.frozen:
             self.seconds = self.seconds + 1
             self.postac.punkty += 1
@@ -275,6 +283,10 @@ class TamagotchiGame:
         root.after(1000, self.updateTimeAndPoints)
 
     def updateFood(self):
+        """
+        Aktualizuje jedzenie.
+        :return:
+        """
         if not self.frozen:
             self.postac.najedzenie = self.postac.najedzenie - 1 * self.postac.mnoznikGlodu
             self.food_progress_bar['value'] = self.postac.najedzenie
@@ -284,6 +296,10 @@ class TamagotchiGame:
         self.root.after(3000, self.updateFood)
 
     def updateBoredom(self):
+        """
+        Aktualizuje poziom nudy.
+        :return:
+        """
         if not self.frozen:
             self.postac.nuda = self.postac.nuda + 1 * self.postac.mnoznikNudy
             self.boredom_progress_bar['value'] = self.postac.nuda
@@ -293,6 +309,10 @@ class TamagotchiGame:
         self.root.after(3000, self.updateBoredom)
 
     def updateMonety(self):
+        """
+        Aktualizuje monety.
+        :return:
+        """
         if not self.frozen:
             self.postac.monety = self.postac.monety + 1* self.postac.mnoznikMonet
             self.label_monety.configure(text="Monety:" + str(self.postac.monety))
@@ -302,6 +322,8 @@ class TamagotchiGame:
 
     def feed(self,food_type):
         """
+            Na podstawie wciśniętego przyciusku karmimy zwierzaka odpowiednim jedzeniem.
+
             zwierzak musi miec zroznicowana diete, wiec po pierwszym posileniu zapoznawczym
             nie mozna mu dac do jedzenia tego co jadl w poprzednim posilku i dwa posilki temu
             (np: przy zjedzeniu: woda, woda, chlep nie mozna mu dac znow ani wody ani chlepka bo jedzenie jest za malo zroznicowane
@@ -381,6 +403,12 @@ class TamagotchiGame:
         self.label_monety.config(text=f"Monety: {self.postac.monety}")
 
     def play(self,activityType):
+        """
+        Na podstawie naciśniętego przycisku rozpoczynamy zabawę na odgórnie określony czas.
+        W trakcie zabawy nie można rozpocząć innej zabawy.
+        :param activityType:
+        :return:
+        """
         if self.activity_happening:
             return  # ignorowanie nacisniecia
 
@@ -412,6 +440,10 @@ class TamagotchiGame:
         root.after(duration, end_activity)
 
     def random_event(self):
+        """
+        Jeśli na zegarze jest 20, 40 albo 49 sekund, istnieje 70% szans,że wydarzy się losowy event. Może być pozytywny jak i negatywny.
+        :return:
+        """
         r = random.random()
         # ------------- random eventy pozytywne --------------
         if r < 0.4:
@@ -511,6 +543,10 @@ class TamagotchiGame:
 
     # Check for Lose
     def lose_conditions(self):
+        """
+        Metoda sprawdzająca czy stworek powinien nie żyć.
+        :return:
+        """
         if not self.frozen:
             if self.postac.CzyZginalZGlodu:
                 self.frozen = True

@@ -6,7 +6,7 @@ class Tamagotchi:
         self.nuda = maxPoziomNudy//2 #poczatkowo ustawiamy na polowe nudy
         self.maxNuda = maxPoziomNudy
         self.rodzajPostaci = rodzaj
-        self.monety = 200
+        self.monety = 20
         self.punkty = 0
         self.mnoznikMonet = mnoznikMonet
         self.mnoznikGlodu = mnoznikGlodu
