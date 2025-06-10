@@ -15,3 +15,12 @@ class Tamagotchi:
         self.CzyZginalOdEventu = False
         self.CzyZginalOdBankructwa = False
         self.CzyZginalZNudy = False
+        self.maxWynikSesja = self.odczytMaxWynikSesja()
+
+    def odczytMaxWynikSesja(self):
+        with open("maxWynik.txt") as f:
+            return int(f.readline())
+
+    def zapisMaxWynikSesja(self):
+        with open("maxWynik.txt", "w") as f:
+            f.write(str(self.punkty))

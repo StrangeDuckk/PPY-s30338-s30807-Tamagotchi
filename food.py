@@ -4,7 +4,7 @@ from events import random_event
 def updateFood(root,postac,food_progress_bar,food_numeric):
     if not mainGameLoop.frozen:
         postac.najedzenie = postac.najedzenie - 1*postac.mnoznikGlodu
-        food_progress_bar['value'] = postac.najedzenie/postac.maxNajedzenie*100
+        food_progress_bar['value'] = postac.najedzenie/postac.maxNajedzenie*100#todo przypomniec
         food_numeric.configure(text=f"{postac.najedzenie} / {postac.maxNajedzenie}")
     root.after(3000, lambda: updateFood(root,postac,food_progress_bar,food_numeric))    #lambda bo updateFood potrzebuje root a nie jest w mainGameLoop
 
@@ -54,6 +54,7 @@ def feed(foodType,postac,food_progress_bar,food_numeric,label_monety,root):
                 if postac.zjedzonePokarmy[-1] != "ryba" and postac.zjedzonePokarmy[-2] != "ryba":
                     postac.monety -= 20
                     postac.najedzenie += 60
+                    postac.punkty += 5
                     postac.zjedzonePokarmy.append("ryba")
                     print(f"zwierzak zjadl: {postac.zjedzonePokarmy[-1]}")
                 else:
@@ -61,6 +62,7 @@ def feed(foodType,postac,food_progress_bar,food_numeric,label_monety,root):
             else:
                 postac.monety -= 20
                 postac.najedzenie += 60
+                postac.punkty += 5
                 postac.zjedzonePokarmy.append("ryba")
                 print(f"zwierzak zjadl: {postac.zjedzonePokarmy[-1]}")
     else:

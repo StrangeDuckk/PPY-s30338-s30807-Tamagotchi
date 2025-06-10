@@ -50,18 +50,21 @@ def startMainGameLoop(root,characterType):
     time_label = (tk.Label(root, text=f"Time: {minutes} min : {seconds%60} s"))
     time_label.grid(row=0, column=5 )
 
+    points_label = (tk.Label(root, text=f"current Points: {postac.punkty} points"))
+    points_label.grid(row=1, column=5 )
+
     def updateTimeAndPointsAndInvokeRandomEvents(seconds, minutes):
 
         global frozen
-        global points
         if not frozen:
             seconds = seconds + 1
-            points = points + 1
+            postac.punkty += 1
             if seconds % 60 == 0:
                 minutes = minutes + 1*postac.mnoznikMonet
                 seconds = 0
 
             time_label.configure(text=f"Time: {minutes} min : {seconds%60} s")
+            points_label.configure(text=f"current Points: {postac.punkty} points")
 
             # Random events
             if seconds == 20 or seconds == 40 or seconds == 60:
@@ -116,8 +119,8 @@ def startMainGameLoop(root,characterType):
             postac.monety = postac.monety + 1*postac.mnoznikMonet
             label_monety.configure(text="Monety:" + str(postac.monety))
             label_monety.grid(row=3, column=0, columnspan=2)
-            if postac.monety <0:
-                postac.czyZginalOdBankructwa = True
+            if postac.monety < 0:
+                postac.CzyZginalOdBankructwa = True
         root.after(6000, updateMonety)
 
 
@@ -144,18 +147,26 @@ def startMainGameLoop(root,characterType):
         if not frozen:
             if postac.najedzenie < 0 or postac.najedzenie > postac.maxNajedzenie:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (fullness or emptiness)\nYour score is: {points}')
+                if postac.maxWynikSesja<postac.punkty:
+                    postac.zapisMaxWynikSesja()
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (fullness or emptiness)\nYour score is: {postac.punkty}\nlast best score: {postac.maxWynikSesja}')
                 startMainGameLoop(root,postac.rodzajPostaci)
             elif postac.CzyZginalOdEventu:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (event)\nYour score is: {points}')
+                if postac.maxWynikSesja<postac.punkty:
+                    postac.zapisMaxWynikSesja()
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (event)\nYour score is: {postac.punkty}\nlast best score: {postac.maxWynikSesja}')
                 startMainGameLoop(root, postac.rodzajPostaci)
             elif postac.CzyZginalOdBankructwa:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (bankruptcy)\nYour score is: {points}')
+                if postac.maxWynikSesja<postac.punkty:
+                    postac.zapisMaxWynikSesja()
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (bankruptcy)\nYour score is: {postac.punkty}\nlast best score: {postac.maxWynikSesja}')
             elif postac.CzyZginalZNudy:
                 frozen = True
-                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (boredom or heart attack)\nYour score is: {points}')
+                if postac.maxWynikSesja<postac.punkty:
+                    postac.zapisMaxWynikSesja()
+                messagebox.showinfo('You Lost!', f'You are definitely dead :[ (boredom or heart attack)\nYour score is: {points}\nlast best score: {postac.maxWynikSesja}')
 
 
         root.after(1000, lose_conditions)
